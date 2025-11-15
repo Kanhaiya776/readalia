@@ -1,0 +1,19 @@
+# web/sites/default/settings.php
+.env
+.docker
+files
+vendor
+web/modules/contrib
+web/themes/contrib
+web/core
+drupal_settings/*
+project/web/libraries/*
+!drupal_settings/default.settings.local.php
+*.sql
+*.zip
+*.save
+project_folders/*
+!project_folders/files/index.php
+!project_folders/private_files/index.php
+!project_folders/dbdata/text
+!project_folders/config
