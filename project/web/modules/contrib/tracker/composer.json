@@ -1,0 +1,14 @@
+{
+    "description": "Enables tracking of recent content for users.",
+    "homepage": "https://www.drupal.org/project/tracker",
+    "license": "GPL-2.0-or-later",
+    "name": "drupal/tracker",
+    "require": {
+      "drupal/core": "^9.5 || ^10 || ^11"
+    },
+    "support": {
+        "issues": "https://www.drupal.org/project/issues/tracker",
+        "source": "https://git.drupalcode.org/project/tracker"
+    },
+    "type": "drupal-module"
+}

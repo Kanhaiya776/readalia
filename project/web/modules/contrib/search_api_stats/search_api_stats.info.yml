@@ -1,0 +1,13 @@
+name: Search API Stats
+description: "Enabling the recording and presentation of statistics for the Search API module."
+type: module
+core_version_requirement: ^8 || ^9 || ^10 || ^11
+package: Search
+
+dependencies:
+  - search_api:search_api
+
+# Information added by Drupal.org packaging script on 2024-04-30
+version: '8.x-1.0'
+project: 'search_api_stats'
+datestamp: 1714466842

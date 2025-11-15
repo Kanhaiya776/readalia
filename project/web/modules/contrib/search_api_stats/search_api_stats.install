@@ -1,0 +1,118 @@
+<?php
+
+/**
+ * @file
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function search_api_stats_schema() {
+  $schema['search_api_stats'] = [
+    'description' => 'Table that contains a log of Search API queries and performance.',
+    'fields' => [
+      'qid' => [
+        'type' => 'serial',
+        'not null' => TRUE,
+        'description' => 'Primary Key: Unique log ID.',
+      ],
+      's_name' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => TRUE,
+        'description' => 'Search API server machine_name',
+      ],
+      'i_name' => [
+        'type' => 'varchar',
+        'length' => 50,
+        'not null' => TRUE,
+        'description' => 'Search API index machine_name',
+      ],
+      'timestamp' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'Unix timestamp of when query occurred.',
+      ],
+      'numfound' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'Number of results.',
+      ],
+      'total_time' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'Total query time (miliseconds).',
+      ],
+      'prepare_time' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'Time taken by Search API prepare phase for this query (miliseconds).',
+      ],
+      'process_time' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'Time taken by Search API process phase for this query (miliseconds).',
+      ],
+      'uid' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'The {users}.uid of the user who triggered the query.',
+      ],
+      'sid' => [
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => 'Session ID of user who triggered the query.',
+      ],
+      'showed_suggestions' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'Indicates whether a spelling suggestion was shown.',
+      ],
+      'page' => [
+        'type' => 'varchar',
+        'length' => 10,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => 'Current results page.',
+      ],
+      'keywords' => [
+        'type' => 'varchar',
+        'length' => 128,
+        'not null' => FALSE,
+        'default' => '',
+        'description' => 'Query keywords arguments.',
+      ],
+      'filters' => [
+        'type' => 'text',
+        'size' => 'normal',
+        'not null' => TRUE,
+        'description' => 'Query filter arguments.',
+      ],
+      'sort' => [
+        'type' => 'varchar',
+        'length' => 128,
+        'not null' => TRUE,
+        'description' => 'Query sort arguments.',
+      ],
+      'language' => [
+        'description' => 'The site languages of keywords when search was executed.',
+        'type' => 'varchar',
+        'length' => 12,
+        'not null' => TRUE,
+        'default' => '',
+      ],
+    ],
+    'primary key' => ['qid'],
+  ];
+
+  return $schema;
+}

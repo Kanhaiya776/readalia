@@ -1,0 +1,36 @@
+<?php 
+
+use Drupal\node\NodeInterface;
+
+function node_publish_logger_entity_insert(\Drupal\Core\Entity\EntityInterface $entity) {
+    if( $entity instanceof NodeInterface) {
+        _node_publish_logger_check_publish($entity, TRUE);
+    }
+}
+function node_publish_logger_entity_update(\Drupal\Core\Entity\EntityInterface $entity) {
+    if( $entity instanceof NodeInterface && $entity->isPublished() && !entity->original->isPublished()) {
+        _node_publish_logger_check_publish($entity, FALSE);
+    }
+}
+
+function _node_publish_logger_check_publish(NodeInterface $node, $is_new) {
+    if(!$node->isPublished()) {
+        return;
+    }
+    $keywords = [
+        'toptal','drupal','developer'
+    ];
+    $body = $node->get('body')->value ?? '';
+    foreach($keywords as $keyword) {
+        if(strpos($body,$keyword)!==FALSE) {
+            \Drupal::logger('node_published_logger')->info(
+                'Node "@title" was published and contains the restricted keyword: "@keyword".',
+                [
+                    '@title' => $node->getTitle(),
+                    '@keyword' => $keyword
+                ]
+            );
+            break;
+        }
+    }
+}

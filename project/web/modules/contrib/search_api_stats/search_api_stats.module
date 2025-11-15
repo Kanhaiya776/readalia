@@ -1,0 +1,48 @@
+<?php
+
+/**
+ * @file
+ */
+
+use Drupal\search_api\Query\ResultSetInterface;
+use Drupal\Core\Database\Database;
+
+/**
+ * Implements hook_search_api_results_alter().
+ */
+function search_api_stats_search_api_results_alter(ResultSetInterface &$results) {
+  $user = Drupal::currentUser();
+  $language = Drupal::languageManager()->getCurrentLanguage();
+  $database = Database::getConnection();
+  $query = $results->getQuery();
+  $index = $query->getIndex();
+  if (!empty($index)) {
+    $server = $index->get('server');
+  }
+
+  if (empty($index) || empty($server) || empty($originalKeys = $query->getOriginalKeys())) {
+    return;
+  }
+
+  $lowerOriginalKeys = mb_strtolower($originalKeys ?? '');
+  $keywords = trim($lowerOriginalKeys);
+  // To avoid to insert empty keywords value into database.
+  if (!empty($keywords)) {
+    $fields = array(
+      's_name' => $server,
+      'i_name' => $index->id(),
+      'timestamp' => \Drupal::time()->getRequestTime(),
+      'uid' => $user->id(),
+      'sid' => session_id(),
+      'keywords' => $keywords,
+      'numfound' => $results->getResultCount(),
+      'filters' => '',
+      'sort' => '',
+      'language' => $language->getId()
+    );
+    \Drupal::moduleHandler()->alter('search_api_stats_record', $fields);
+    $database->insert('search_api_stats')->fields(
+      $fields
+    )->execute();
+  }
+}

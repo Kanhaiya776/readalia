@@ -1,0 +1,24 @@
+{#
+/**
+ * @file
+ * Theme override for a breadcrumb trail.
+ *
+ * Available variables:
+ * - breadcrumb: Breadcrumb trail items.
+ * - breadcrumb_divider: Breadcrumb divider character
+ */
+#}
+
+{% set site_url = path('<current>') %}
+{% if site_url %}
+    <div class="breadcrumbs-menu">
+        <a href="{{ path('<front>') }}">Home</a>
+        <span> › </span>
+        {% set url_parts = site_url|split('/') %}
+        {% set last_part = url_parts|last ?: url_parts|reverse|slice(1, 1)|first %}
+        {% if last_part %}
+            <span class="breadcrumbs-text">{{ last_part|replace({'-': ' '})|capitalize }}</span>
+        {% endif %}
+    </div>
+{% endif %}
+

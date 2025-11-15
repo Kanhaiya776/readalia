@@ -1,0 +1,28 @@
+block.settings.search_api_form_block:
+  type: block_settings
+  label: 'Search API form block settings'
+  mapping:
+    action_url:
+      type: string
+      label: 'Search page'
+    input_name:
+      type: string
+      label: 'Input name'
+    input_placeholder:
+      type: label
+      label: 'Input placeholder'
+      translatable: true
+    submit_value:
+      type: label
+      label: 'Submit label'
+      translatable: true
+    pass_get_params:
+      type: boolean
+      label: 'Pass GET parameters'
+    input_label:
+      type: label
+      label: 'Input label'
+      translatable: true
+    input_label_visibility:
+      type: string
+      label: 'Label visibility'

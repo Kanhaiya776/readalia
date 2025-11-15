@@ -1,0 +1,5 @@
+name: Node Publish Logger
+type: module
+description: logs message
+core_version_requirement: ^9 || ^10 || ^11
+package: custom

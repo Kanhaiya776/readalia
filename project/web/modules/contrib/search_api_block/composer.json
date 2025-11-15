@@ -1,0 +1,7 @@
+{
+    "name": "drupal/search_api_block",
+    "description": "The Search API Block module provides a simple block in order to show a search input anywhere in your website.",
+    "type": "drupal-module",
+    "homepage": "https://www.drupal.org/project/teamleader",
+    "license": "GPL-2.0+"
+}

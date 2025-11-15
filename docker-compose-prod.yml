@@ -1,0 +1,59 @@
+version: '3.7'
+## Adding Network
+networks:
+  stage:
+#  ${COMPOSE_PROJECT_NAME}:
+    name: ${COMPOSE_PROJECT_NAME}
+    driver: bridge
+
+services:
+  drupal:
+#    build:
+##    Put desired PHP version in .env file
+#      dockerfile: ./Dockerfile
+#      context: .
+## Run the following command before using docker-compose
+## docker build . -t alia/d10
+    image: alia/d10
+    ports:
+      - "${APP_EXPOSED_PORT}:${TARGET_PORT}"
+    restart: always
+    volumes:
+#      - ./project:/opt/drupal:cached
+      - ./project_folders/files:/opt/drupal/web/sites/default/files:rw
+      - ./project_folders/private_files:/opt/drupal/web/sites/default/files/private:rw
+      - ./project_folders/config:/opt/drupal/config:rw
+      - ./drupal_settings/settings.local.php:/opt/drupal/web/sites/default/settings.local.php:ro
+    environment:
+      - DRUPAL_DB_HOST=${DB_HOST}
+      - DRUPAL_DB_PORT=${DB_PORT}
+      - DRUPAL_DB_NAME=${DB_NAME}
+      - DRUPAL_DB_USER=${DB_USER_NAME}
+      - DRUPAL_DB_PASSWORD=${DB_USER_PSWD}
+      - DRUPAL_DB_PREFIX=${DB_PREFIX}
+      - DRUPAL_HASH=${DRUPAL_HASH_SALT}
+  db:
+    image: mariadb
+    environment:
+        MYSQL_ROOT_PASSWORD: ${DB_ROOT_PSWD}
+        MYSQL_DATABASE: ${DB_NAME}
+        MYSQL_USER: ${DB_USER_NAME}
+        MYSQL_PASSWORD: ${DB_USER_PSWD}
+    volumes:
+        - /project_folders/db_data:/var/lib/mysql
+#    ports:
+#      - "3306:330619   
+    profiles:
+       - database
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:5.1
+    ports:
+      - "${PHPMYADMIN_PORT}:80"
+    environment:
+      PMA_HOST: ${DB_HOST}
+      PMA_USER: ${DB_USER_NAME}
+      PMA_PASSWORD: ${DB_USER_PSWD}
+    depends_on:
+      - db
+    profiles:
+      - database
